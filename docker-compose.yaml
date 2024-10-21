@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  litestar:
+    build: ./src/breachkit
+    ports:
+      - "8000:8000"
+    depends_on:
+      - surrealdb
+
+  surrealdb:
+    image: surrealdb/surrealdb:latest
+    command: start --log debug --user root --pass root memory
+    ports:
+      - "8001:8001"
+
+  tor:
+    image: jess/tor-hidden-service
+    environment:
+      - VIRTUAL_PORT=8000
+    volumes:
+      - ./data/tor:/var/lib/tor
+    command: |
+      tor --HiddenServiceDir /var/lib/tor/hidden_service \
+          --HiddenServicePort 80 litestar:8000

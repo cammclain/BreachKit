@@ -1,6 +1,7 @@
-fastapi
 uvicorn
 pydantic
 surrealdb
 ollama
-
+litestar
+bbot
+markdown
