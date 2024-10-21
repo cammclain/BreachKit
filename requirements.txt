@@ -2,6 +2,6 @@ uvicorn
 pydantic
 surrealdb
 ollama
-litestar
+litestar[all]
 bbot
 markdown
