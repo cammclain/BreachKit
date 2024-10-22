@@ -1,6 +1,13 @@
-from pydantic import BaseModel, Field
+from __future__ import annotations
+from pydantic import BaseModel, Field, FieldInfo
 from typing import Optional, List
 from surrealdb import SurrealDB
+from datetime import datetime
+from uuid import uuid4
+from .task import Task
+from .scope import Scope
+
+
 
 # import models
 from .task import Task

@@ -1,0 +1,5 @@
+litestar
+pydantic
+bcrypt
+surrealdb
+jinja2

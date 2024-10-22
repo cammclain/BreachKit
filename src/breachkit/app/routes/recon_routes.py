@@ -1,16 +1,27 @@
-from litestar import get, post
-from breachkit.app.breaching.bbot_utils import run_bbot, parse_bbot_output
-from pathlib import Path
+from litestar import Router, get, post
+from breachkit.app.models.operation import Operation
+from breachkit.app.breaching.bbot_utils import run_bbot_scan
 
-@post("/recon/start")
-async def start_recon(data: dict):
-    target = data["target"]
-    output_dir = Path("./data")
-    run_bbot(target, output_dir)
-    return {"message": "Recon started."}
+routes = Router(path="/recon")
 
-@get("/recon/results")
-async def get_recon_results():
-    output_file = Path("./data/bbot_output.json")
-    results = parse_bbot_output(output_file)
-    return results
+@post("/start")
+async def start_scan(target: str) -> dict:
+    """
+    Start a BBot scan on the provided target.
+    """
+    operation = Operation.create(name=f"Scan {target}", target=target)
+    scan_result = await run_bbot_scan(target)
+    operation.update(result=scan_result)
+
+    return {"status": "Scan started", "operation_id": operation.id}
+
+@get("/{operation_id}")
+async def get_scan_result(operation_id: str) -> dict:
+    """
+    Retrieve the results of a completed scan.
+    """
+    operation = Operation.get(operation_id)
+    if not operation:
+        return {"error": "Operation not found"}, 404
+
+    return {"operation": operation.to_dict()}

@@ -1,0 +1,6 @@
+
+
+SocksPort 9050
+
+HiddenServiceDir /var/lib/tor/breachkit_xmpp_hidden_service/
+HiddenServicePort 5222 127.0.0.1:5222

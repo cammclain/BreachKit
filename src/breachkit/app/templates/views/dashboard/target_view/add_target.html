@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1 class="title">Add New Target</h1>
+    <form action="/targets/add" method="POST">
+        <div class="field">
+            <label class="label">Target Name</label>
+            <div class="control">
+                <input class="input" type="text" name="name" required>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Description</label>
+            <div class="control">
+                <textarea class="textarea" name="description"></textarea>
+            </div>
+        </div>
+        <div class="control">
+            <button class="button is-link" type="submit">Add Target</button>
+        </div>
+    </form>
+{% endblock %}

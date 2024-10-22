@@ -1,24 +1,36 @@
 version: '3.8'
+
 services:
-  litestar:
+  backend:
     build: ./src/breachkit
+    container_name: breachkit_backend
     ports:
       - "8000:8000"
     depends_on:
       - surrealdb
+      - prosodyim
+    environment:
+      - DATABASE_URL=http://surrealdb:8000/rpc
+      - XMPP_SERVER=prosodyim:5222
 
   surrealdb:
     image: surrealdb/surrealdb:latest
-    command: start --log debug --user root --pass root memory
+    container_name: breachkit_surrealdb
     ports:
-      - "8001:8001"
+      - "8001:8000"
+    command: start --log debug
 
-  tor:
-    image: jess/tor-hidden-service
-    environment:
-      - VIRTUAL_PORT=8000
-    volumes:
-      - ./data/tor:/var/lib/tor
-    command: |
-      tor --HiddenServiceDir /var/lib/tor/hidden_service \
-          --HiddenServicePort 80 litestar:8000
+  prosodyim:
+    build: ./src/prosodyim
+    container_name: prosodyim_server
+    ports:
+      - "5222:5222"
+      - "5269:5269"
+    command: prosodyctl start
+
+  seaweedfs:
+    build: ./src/seaweedfs
+    container_name: seaweedfs
+    ports:
+      - "9333:9333"
+      - "8888:8888"
