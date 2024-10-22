@@ -1,6 +1,6 @@
 from litestar import Router, get, post
-from breachkit.app.models.operation import Operation
-from breachkit.app.breaching.bbot_utils import run_bbot_scan
+from breachkit_core.app.models.operation import Operation
+from breachkit_core.app.breaching.bbot_utils import run_bbot_scan
 
 routes = Router(path="/recon")
 

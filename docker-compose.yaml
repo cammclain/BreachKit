@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   backend:
-    build: ./src/breachkit
+    build: ./src/breachkit_core
     container_name: breachkit_backend
     ports:
-      - "8000:8000"
+      - "8003:8003"
     depends_on:
       - surrealdb
       - prosodyim
@@ -21,7 +21,7 @@ services:
     command: start --log debug
 
   prosodyim:
-    build: ./src/prosodyim
+    build: ./src/services/prosodyim
     container_name: prosodyim_server
     ports:
       - "5222:5222"
@@ -29,8 +29,20 @@ services:
     command: prosodyctl start
 
   seaweedfs:
-    build: ./src/seaweedfs
+    build: ./src/services/seaweedfs
     container_name: seaweedfs
     ports:
       - "9333:9333"
       - "8888:8888"
+
+  ollama:
+    build: ./src/services/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+
+  temporal:
+    build: ./src/services/temporal
+    container_name: temporal
+    ports:
+      - "7233:7233"

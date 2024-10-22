@@ -1,0 +1,4 @@
+SocksPort 9050
+
+HiddenServiceDir /var/lib/tor/breachkit_frontend_hidden_service/
+HiddenServicePort 80 127.0.0.1:80

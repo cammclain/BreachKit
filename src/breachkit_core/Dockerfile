@@ -11,7 +11,7 @@ COPY . .
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # Expose the application port
-EXPOSE 8000
+EXPOSE 8003
 
 # Set the entry point to the ASGI server
-CMD ["litestar", "run", "asgi.py", "--port", "8000", "--host", "127.0.0.1"]
+CMD ["litestar", "run", "asgi.py", "--port", "8003", "--host", "127.0.0.1"]
