@@ -10,15 +10,19 @@ WORKDIR /breachkit_core
 
 COPY requirements.txt .
 
-# make the virtual environment
+# Create the virtual environment
 RUN python3 -m venv venv
 
-# set the virtual environment as the active environment
+# Set the virtual environment as the active environment
 ENV PATH="/breachkit_core/venv/bin:$PATH"
 
-# install the dependencies
-RUN pip3 install -r requirements.txt
+# Install Python dependencies
+RUN pip install -r requirements.txt --no-cache-dir
 
 COPY . .
 
-CMD ["litestar", "run", "asgi.py", "--host", "127.0.0.1", "--port", "8003"]
+# Expose the backend port
+EXPOSE 8003
+
+# Use an entrypoint script for better startup control
+ENTRYPOINT ["/breachkit_core/entrypoint.sh"]
