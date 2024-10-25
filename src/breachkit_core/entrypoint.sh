@@ -1,10 +1,24 @@
 #!/bin/bash
 
-# Fail on errors
+# Fail the script on any error
 set -e
 
-# Start Tor service in the background (optional)
-service tor start
+# Ensure Tor hidden service directory has the correct ownership
+chown -R debian-tor:debian-tor /var/lib/tor/hidden_service/
+
+# Start Tor in the background
+tor &
+
+# Wait until the Tor hostname file is created (max 30s)
+echo "Waiting for Tor hidden service to initialize..."
+for i in {1..30}; do
+    if [ -f /var/lib/tor/hidden_service/hostname ]; then
+        echo "Tor hidden service is ready!"
+        cat /var/lib/tor/hidden_service/hostname
+        break
+    fi
+    sleep 1
+done
 
 # Check if the virtual environment exists
 if [ ! -d "venv" ]; then
@@ -15,6 +29,5 @@ fi
 # Activate the virtual environment
 source venv/bin/activate
 
-# Run the Litestar application
-exec litestar run --app src.breachkit_core.asgi:app --host 0.0.0.0 --port 8003 # TODO: Set this to localhost & use tor 
-
+# Run the Litestar application, binding only to localhost (safer with Tor)
+exec litestar run src.breachkit_core.asgi:app --host 127.0.0.1 --port 8003
