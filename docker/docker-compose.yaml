@@ -11,6 +11,11 @@ services:
     environment:
       - DATABASE_URL=http://surrealdb:8000/rpc
     
+  frontend:
+    build: ../src/services/frontend
+    container_name: breachkit_nginx_frontend
+    ports:
+      - "80:80"
 
   surrealdb:
     image: surrealdb/surrealdb:latest

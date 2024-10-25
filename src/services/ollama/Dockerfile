@@ -3,15 +3,24 @@ FROM debian:bullseye-slim
 
 # Install any necessary dependencies
 RUN apt-get update && apt-get install -y \
-    python3 python3-pip vim curl tor torsocks && \
+    python3 python3-pip vim curl tor torsocks python3-venv && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Ollama
 RUN curl -fsSL https://ollama.com/install.sh | sh
 
-# Verify the installation
-RUN ollama version
+# Copy requirements.txt into the container
+COPY requirements.txt /ollama/requirements.txt
+
+# create a virtual environment
+RUN python3 -m venv /ollama/venv
+
+# set the virtual environment as the active environment
+ENV PATH="/ollama/venv/bin:$PATH"
+
+# install the dependencies
+RUN pip install -r /ollama/requirements.txt --no-cache-dir
 
 # Set the working directory
 WORKDIR /ollama
@@ -22,8 +31,7 @@ COPY app/models/ /ollama/models/
 # Expose the required port
 EXPOSE 11434
 
-# Install Python dependencies (if needed)
-RUN pip install torch transformers  # Adjust packages as necessary
+
 
 # Copy the entrypoint script or server code (adjust this if necessary)
 COPY app/asgi.py /ollama/app/asgi.py

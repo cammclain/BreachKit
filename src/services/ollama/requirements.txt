@@ -1,4 +1,3 @@
 litestar[all]
 uvicorn
-
 ollama
