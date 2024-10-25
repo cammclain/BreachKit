@@ -1,6 +1,6 @@
 from __future__ import annotations
 from litestar import Litestar
-from routes.ollama_routes import OllamaController
+from app.routes.ollama_routes import OllamaController
 
 app: Litestar = Litestar(
     route_handlers=[OllamaController],
