@@ -1,1 +1,0 @@
-FROM surrealdb/surrealdb:latest

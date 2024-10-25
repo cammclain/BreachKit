@@ -1,0 +1,4 @@
+litestar[all]
+uvicorn
+
+ollama

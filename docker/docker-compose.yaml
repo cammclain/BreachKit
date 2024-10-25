@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ../src/breachkit_core
+    container_name: breachkit_backend
+    ports:
+      - "8003:8003"
+    depends_on:
+      - surrealdb
+    environment:
+      - DATABASE_URL=http://surrealdb:8000/rpc
+    
+
+  surrealdb:
+    image: surrealdb/surrealdb:latest
+    container_name: breachkit_surrealdb
+    ports:
+      - "8001:8000"
+    command: start --log debug
+
+
+  ollama:
+    build: ../src/services/ollama
+    container_name: ollama
+    ports:
+      - "11433:11433"
+    
+
+
+  redis:
+    build: ../src/services/redis
+    container_name: redis
+    ports:
+      - "6379:6379"

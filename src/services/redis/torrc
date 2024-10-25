@@ -1,0 +1,4 @@
+SocksPort 9050
+
+HiddenServiceDir /var/lib/tor/redis_hidden_service/
+HiddenServicePort 6379 127.0.0.1:6379

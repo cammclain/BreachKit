@@ -1,3 +1,5 @@
+# This Dockerfile is used to build the BreachKit core service.
+
 FROM debian:latest
 
 RUN apt-get update && apt-get install -y python3 \
@@ -11,7 +13,7 @@ RUN apt-get update && apt-get install -y python3 \
     torsocks
 
 COPY requirements.txt .
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt --no-cache-dir
 
 COPY . .
 

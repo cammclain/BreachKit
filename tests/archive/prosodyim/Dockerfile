@@ -19,9 +19,13 @@ RUN mkdir -p /var/lib/tor/hidden_service
 COPY prosody.cfg.lua /etc/prosody/prosody.cfg.lua
 COPY torrc /etc/tor/torrc
 
+# Copy the setup script
+COPY setup-prosody.sh /usr/local/bin/setup-prosody.sh
+RUN chmod +x /usr/local/bin/setup-prosody.sh
+
 # Set permissions for Tor hidden service
 RUN chown -R debian-tor:debian-tor /var/lib/tor/hidden_service && \
     chmod 700 /var/lib/tor/hidden_service
 
-# Command to run both Tor and Prosody on container startup
-CMD tor & prosodyctl start && tail -f /dev/null
+# Use the setup script as the entrypoint
+CMD ["/usr/local/bin/setup-prosody.sh"]

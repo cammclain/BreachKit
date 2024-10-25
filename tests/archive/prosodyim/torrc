@@ -1,0 +1,7 @@
+
+
+SocksPort 9050
+
+HiddenServiceDir /var/lib/tor/hidden_service/
+HiddenServicePort 5222 127.0.0.1:5222
+HiddenServicePort 5269 127.0.0.1:5269
