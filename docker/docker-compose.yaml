@@ -38,3 +38,7 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+
+  volumes:
+  - ./tor-data:/var/lib/tor/hidden_service/
+
