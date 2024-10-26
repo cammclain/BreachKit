@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Fail on errors
+# Fail on any error
 set -e
 
 # Start Tor in the background
@@ -9,8 +9,11 @@ tor &
 # Wait for Tor to initialize
 sleep 5
 
-# Export PYTHONPATH
+# Activate the virtual environment
+source /ollama/venv/bin/activate
+
+# Set Python path
 export PYTHONPATH=/ollama:$PYTHONPATH
 
-# Run the Ollama ASGI app with exec to forward signals correctly
+# Start the ASGI server
 exec python3 /ollama/app/asgi.py
