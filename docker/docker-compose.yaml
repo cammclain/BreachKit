@@ -5,23 +5,30 @@ services:
     build: ../src/breachkit_core
     container_name: breachkit_backend
     ports:
-      - "8003:8003"
+      - "127.0.0.1:8003:8003"
     depends_on:
       - surrealdb
     environment:
       - DATABASE_URL=http://surrealdb:8000/rpc
     
+    volumes:
+      - ./tor-data:/var/lib/tor/hidden_service/
+
+
   frontend:
     build: ../src/services/frontend
     container_name: breachkit_nginx_frontend
     ports:
-      - "8088:80"
+      - "127.0.0.1:8088:80"
+    volumes:
+      - ./tor-data:/var/lib/tor/hidden_service/
+
 
   surrealdb:
     image: surrealdb/surrealdb:latest
     container_name: breachkit_surrealdb
     ports:
-      - "8001:8000"
+      - "127.0.0.1:8001:8000"
     command: start --log debug
 
 
@@ -38,7 +45,4 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
-
-  volumes:
-  - ./tor-data:/var/lib/tor/hidden_service/
 
