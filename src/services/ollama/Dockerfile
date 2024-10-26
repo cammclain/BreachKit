@@ -36,5 +36,6 @@ EXPOSE 11434
 # Copy the entrypoint script or server code (adjust this if necessary)
 COPY app/asgi.py /ollama/app/asgi.py
 
-# Start the server (replace this with your actual command to run Ollama)
-CMD ["python3", "/ollama/app/asgi.py"]
+COPY entrypoint.sh /ollama/entrypoint.sh
+
+ENTRYPOINT [ "/ollama/entrypoint.sh" ]
