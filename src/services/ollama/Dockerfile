@@ -1,41 +1,40 @@
-# Use the appropriate base image for Ollama (replace this with the correct image if required)
+# Use Debian Slim as the base image
 FROM debian:bullseye-slim
 
-# Install any necessary dependencies
+# Set environment variables to prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install dependencies (including Tor)
 RUN apt-get update && apt-get install -y \
-    python3 python3-pip vim curl tor torsocks python3-venv && \
+    python3 python3-pip python3-venv vim curl tor torsocks && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Ollama
+# Install Ollama CLI
 RUN curl -fsSL https://ollama.com/install.sh | sh
 
-# Copy requirements.txt into the container
-COPY requirements.txt /ollama/requirements.txt
-
-# create a virtual environment
-RUN python3 -m venv /ollama/venv
-
-# set the virtual environment as the active environment
-ENV PATH="/ollama/venv/bin:$PATH"
-
-# install the dependencies
-RUN pip install -r /ollama/requirements.txt --no-cache-dir
-
-# Set the working directory
+# Create the working directory
 WORKDIR /ollama
 
-# Copy model files into the container
-COPY app/models/ /ollama/models/
+# Create a virtual environment and activate it
+RUN python3 -m venv venv && \
+    . venv/bin/activate && \
+    pip install --upgrade pip
 
-# Expose the required port
+# Copy requirements.txt and install dependencies inside the virtual environment
+COPY requirements.txt /ollama/requirements.txt
+RUN . venv/bin/activate && \
+    pip install -r /ollama/requirements.txt --no-cache-dir
+
+# Copy the entire application folder (avoiding redundant copies)
+COPY app/ /ollama/app/
+
+# Copy the entrypoint script and make it executable
+COPY entrypoint.sh /ollama/entrypoint.sh
+RUN chmod +x /ollama/entrypoint.sh
+
+# Expose the necessary port
 EXPOSE 11434
 
-
-
-# Copy the entrypoint script or server code (adjust this if necessary)
-COPY app/asgi.py /ollama/app/asgi.py
-
-COPY entrypoint.sh /ollama/entrypoint.sh
-
-ENTRYPOINT [ "/ollama/entrypoint.sh" ]
+# Run the entrypoint script
+ENTRYPOINT ["/ollama/entrypoint.sh"]
