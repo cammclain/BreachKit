@@ -23,6 +23,11 @@ services:
     volumes:
       - ./tor-data:/var/lib/tor/hidden_service/
 
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:9050"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   surrealdb:
     image: surrealdb/surrealdb:latest
