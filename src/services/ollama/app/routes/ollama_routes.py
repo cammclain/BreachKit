@@ -17,7 +17,7 @@ class OllamaController(Controller):
         """List all available models."""
         return {"models": list(MODELS.keys())}
 
-    @get("/models/{model_name}")
+    @get("/models/{model_name:str}")
     async def get_model(self, model_name: str) -> Optional[Dict[str, str]]:
         """Get details about a specific model."""
         model = MODELS.get(model_name)
@@ -25,7 +25,7 @@ class OllamaController(Controller):
             return {"error": f"Model '{model_name}' not found"}, 404
         return model
 
-    @post("/models/{model_name}/load")
+    @post("/models/{model_name:str}/load")
     async def load_model(self, model_name: str) -> Dict[str, str]:
         """Load a model into memory."""
         if model_name in MODELS:
@@ -33,7 +33,7 @@ class OllamaController(Controller):
         MODELS[model_name] = {"status": "loaded", "description": f"Model '{model_name}' loaded"}
         return {"message": f"Model '{model_name}' loaded successfully"}
 
-    @delete("/models/{model_name}/unload")
+    @delete("/models/{model_name:str}/unload")
     async def unload_model(self, model_name: str) -> Dict[str, str]:
         """Unload a model from memory."""
         if model_name not in MODELS:
@@ -41,7 +41,7 @@ class OllamaController(Controller):
         del MODELS[model_name]
         return {"message": f"Model '{model_name}' unloaded successfully"}
 
-    @post("/models/{model_name}/run")
+    @post("/models/{model_name:str}/run")
     async def run_model(self, model_name: str, request: Request) -> Dict[str, str]:
         """Run a model with given input."""
         model = MODELS.get(model_name)
