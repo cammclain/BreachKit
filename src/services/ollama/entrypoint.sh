@@ -16,4 +16,4 @@ source /ollama/venv/bin/activate
 export PYTHONPATH=/ollama:$PYTHONPATH
 
 # Start the ASGI server
-exec python3 /ollama/app/asgi.py
+exec litestar run --app "src.breachkit_core.asgi:app" --host 127.0.0.1 --port 8003
