@@ -1,16 +1,8 @@
+# Dockerfile for Redis Service
 FROM debian:bullseye-slim
 
-# Install Redis and dependencies
-RUN apt-get update && apt-get install -y \
-    redis-server && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-# Copy custom Redis config if necessary (optional)
-COPY redis.conf /etc/redis/redis.conf
-
-# Set the working directory
-WORKDIR /redis
+RUN apt-get update && apt-get install -y redis-server && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy the entrypoint script
 COPY entrypoint.sh /redis/entrypoint.sh
