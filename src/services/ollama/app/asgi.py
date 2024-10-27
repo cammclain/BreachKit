@@ -6,5 +6,4 @@ app: Litestar = Litestar(
     route_handlers=[OllamaController],
     on_startup=[],
     on_shutdown=[],
-    port=11433,
 )
