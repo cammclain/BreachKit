@@ -3,3 +3,4 @@ pydantic
 bcrypt
 surrealdb
 jinja2
+uvicorn
