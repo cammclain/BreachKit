@@ -4,6 +4,11 @@ FROM debian:bullseye-slim
 RUN apt-get update && apt-get install -y nginx tor && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p /var/lib/tor/hidden_service && \
+    chown -R debian-tor:debian-tor /var/lib/tor && \
+    chmod 700 /var/lib/tor/hidden_service
+
+
 # Set up the debian-tor user and group
 RUN usermod -a -G debian-tor www-data && \
     chown -R debian-tor:debian-tor /var/lib/tor && \
