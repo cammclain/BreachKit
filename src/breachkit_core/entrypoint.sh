@@ -9,6 +9,7 @@ chown -R debian-tor:debian-tor /var/lib/tor/hidden_service/
 # Start Tor in the background
 su -s /bin/bash debian-tor -c "tor &"
 
+sleep 35
 
 # Wait until the Tor hostname file is created (max 30s)
 echo "Waiting for Tor hidden service to initialize..."
@@ -18,7 +19,7 @@ for i in {1..30}; do
         cat /var/lib/tor/hidden_service/hostname
         break
     fi
-    sleep 1
+    sleep 5
 done
 
 # Check if the virtual environment exists

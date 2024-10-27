@@ -4,7 +4,8 @@
 set -e
 
 # Start Tor in the background
-tor &
+su -s /bin/bash debian-tor -c "tor &"
+
 
 # Wait for Tor to initialize
 sleep 5

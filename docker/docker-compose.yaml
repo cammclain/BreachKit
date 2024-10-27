@@ -39,7 +39,7 @@ services:
 
   ollama:
     build: ../src/services/ollama
-    container_name: ollama
+    container_name: ollama_breachkit
     ports:
       - "11433:11433"
     
