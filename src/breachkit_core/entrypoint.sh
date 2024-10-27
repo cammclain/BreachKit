@@ -30,4 +30,4 @@ fi
 source venv/bin/activate
 
 # Run the Litestar application, binding only to localhost (safer with Tor)
-exec litestar run src.breachkit_core.asgi:app --host 127.0.0.1 --port 8003
+exec litestar run --app src.breachkit_core.asgi:app --host 127.0.0.1 --port 8003
