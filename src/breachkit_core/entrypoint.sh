@@ -7,7 +7,8 @@ set -e
 chown -R debian-tor:debian-tor /var/lib/tor/hidden_service/
 
 # Start Tor in the background
-tor &
+su -s /bin/bash debian-tor -c "tor &"
+
 
 # Wait until the Tor hostname file is created (max 30s)
 echo "Waiting for Tor hidden service to initialize..."
@@ -30,4 +31,5 @@ fi
 source venv/bin/activate
 
 # Run the Litestar application, binding only to localhost (safer with Tor)
-exec litestar run --app src.breachkit_core.asgi:app --host 127.0.0.1 --port 8003
+litestar run --app src.breachkit_core.asgi:app --port 8003
+
