@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Fail on errors
-set -e
+set -e  # Exit on errors
 
-# Ensure the Tor directory has the correct ownership
-chown -R debian-tor:debian-tor /var/lib/tor/hidden_service/
+# Ensure the hidden service directory has the correct ownership
+sudo chown -R debian-tor:debian-tor /var/lib/tor/hidden_service/
 
 # Start Tor in the background
-tor &
+echo "Starting Tor..."
+sudo -u debian-tor tor &
 
-# Wait for Tor to initialize and create the hostname file
+# Wait for Tor to initialize and generate the .onion address
 echo "Waiting for Tor to generate the .onion address..."
 for i in {1..30}; do
     if [ -f /var/lib/tor/hidden_service/hostname ]; then
@@ -21,14 +21,16 @@ for i in {1..30}; do
     sleep 1
 done
 
-# If the hostname is still not available, exit with an error
+# If the .onion address is not generated, exit with an error
 if [ -z "$ONION_ADDRESS" ]; then
     echo "Failed to generate the .onion address. Exiting..."
     exit 1
 fi
 
-# Update the NGINX config with the generated .onion address
+# Update the Nginx configuration with the .onion address
+echo "Updating Nginx configuration with the .onion address..."
 sed -i "s/server_name _;/server_name $ONION_ADDRESS;/g" /etc/nginx/nginx.conf
 
-# Start NGINX in the foreground
+# Start Nginx in the foreground
+echo "Starting Nginx..."
 nginx -g "daemon off;"
