@@ -1,0 +1,17 @@
+[project]
+name = "core"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Cam", email = "cammclain@protonmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+core = "core:main"
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
