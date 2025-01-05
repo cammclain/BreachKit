@@ -6,3 +6,4 @@ Base = declarative_base()
 engine = create_engine("sqlite+pysqlite:///:memory:", echo=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+Base.metadata.create_all(bind=engine)
