@@ -1,13 +1,7 @@
 from robyn import Robyn
-
-app = Robyn(__file__)
-
-
-@app.get("/")
-def index():
-    return "Hello World!"
-
+from .application import create_operator_app
 
 if __name__ == "__main__":
     # create a configured "Session" class
-    app.start(host="0.0.0.0", port=8080)
+    operator_app = create_operator_app()
+    operator_app.start(host="0.0.0.0", port=8080)
