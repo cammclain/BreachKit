@@ -14,6 +14,12 @@ class Config(BaseModel):
     db_pool_timeout: int = 30
     db_pool_max_lifetime: int = 300
     db_pool_max_idle: int = 10
+    
+    # JWT
+    jwt_secret: str = os.getenv("JWT_SECRET")
+    jwt_algorithm: str = os.getenv("JWT_ALGORITHM")
+    jwt_access_token_expires: int = 3600
+    jwt_refresh_token_expires: int = 86400
 
     # Redis
     redis_url: str = os.getenv("REDIS_URL")
