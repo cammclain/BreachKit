@@ -25,9 +25,9 @@ class Agent(Base):
     completed_tasks = relationship("TaskResult", back_populates="agents")
     
 class InfectedHost(Base):
-    __tablename__ = "hosts"
+    __tablename__ = "infected_hosts"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True)
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
-    agents = relationship("Agent", back_populates="host")
+    agents = relationship("Agent", back_populates="infected_hosts")
