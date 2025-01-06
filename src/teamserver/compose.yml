@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  core:
+    image: core:latest
+    build:
+      context: .
+      dockerfile: ./packages/core/Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./packages/core:/app
+    depends_on:
+      - db
+  db:
+    image: postgres:latest
+    volumes:
+      - ./packages/core/data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=core
