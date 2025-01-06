@@ -1,25 +1,55 @@
+# Specifies the Docker Compose file format version. Version 3.9 supports modern Docker features
+# and is compatible with both Docker Engine and Docker Desktop
 version: '3.9'
 
+# Define all the services (containers) that make up the application
 services:
+  # Core service: Main application service
   core:
+    # Specifies the image name to be used/built. 'latest' tag indicates the most recent version
     image: core:latest
+    # Build configuration for creating the Docker image
     build:
+      # The build context (root directory) for the Docker build process
+      # '.' means the current directory where this compose file is located
       context: .
+      # Path to the Dockerfile used to build this service
+      # Located in the packages/core directory
       dockerfile: ./packages/core/Dockerfile
+    # Port mapping configuration - maps host port 8080 to container port 8080
+    # Allows accessing the application from outside the container
     ports:
       - 8080:8080
+    # Volume mounting configuration - maps local directory to container directory
+    # Enables live code updates without rebuilding the container
     volumes:
       - ./packages/core:/app
+    # Specifies that this service depends on the 'db' service
+    # Ensures the database starts before the core service
     depends_on:
       - db
+
+  # Database service: PostgreSQL database instance
   db:
+    # Uses the official PostgreSQL image from Docker Hub
+    # 'latest' ensures we're using the most recent stable version
     image: postgres:latest
+    # Persists database data to the local filesystem
+    # Prevents data loss when container is removed/recreated
     volumes:
       - ./packages/core/data/db:/var/lib/postgresql/data
+    # Environment variables for PostgreSQL configuration
+    # Uses variables from a .env file for sensitive data
     environment:
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}  # Database password from environment variable
+      - POSTGRES_DB=${POSTGRES_DB}             # Database name from environment variable
+
+  # Redis service: In-memory data structure store
   redis:
+    # Uses the official Redis image from Docker Hub
+    # 'latest' ensures we're using the most recent stable version
     image: redis:latest
+    # Maps Redis default port to host machine
+    # Allows external connections to Redis on standard port
     ports:
       - 6379:6379
