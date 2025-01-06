@@ -1,0 +1,47 @@
+[workspace]
+
+[package]
+name = "core"
+version = "0.1.0"
+edition = "2021"
+publish = false
+default-run = "core-cli"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[workspace.dependencies]
+loco-rs = { version = "0.13.2" }
+
+[dependencies]
+loco-rs = { workspace = true  }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1.33.0", default-features = false, features = [
+  "rt-multi-thread",
+] }
+async-trait = "0.1.74"
+axum = "0.7.5"
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.17", features = ["env-filter", "json"] }
+migration = { path = "migration" }
+sea-orm = { version = "1.1.0", features = [
+  "sqlx-sqlite",
+  "sqlx-postgres",
+  "runtime-tokio-rustls",
+  "macros",
+] }
+chrono = "0.4"
+validator = { version = "0.18" }
+uuid = { version = "1.6.0", features = ["v4"] }
+include_dir = "0.7"
+
+[[bin]]
+name = "core-cli"
+path = "src/bin/main.rs"
+required-features = []
+
+[dev-dependencies]
+loco-rs = { workspace = true, features = ["testing"] }
+serial_test = "3.1.1"
+rstest = "0.21.0"
+insta = { version = "1.34.0", features = ["redactions", "yaml", "filters"] }
