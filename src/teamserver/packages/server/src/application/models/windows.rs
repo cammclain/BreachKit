@@ -19,3 +19,16 @@ struct Host<'a> {
     id: RecordId,
     hostname: Hostname<'a>,
 }
+
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Computer {
+    pub id: Option<Thing>,               // SurrealDB record ID
+    pub hostname: String,                // Hostname
+    pub ip_address: Option<String>,      // IP address
+    pub os: Option<String>,              // Operating system
+    pub groups: Vec<Thing>,              // IDs of groups the computer belongs to
+    pub users: Vec<Thing>,               // IDs of users logged in
+    pub credentials: Vec<Thing>,         // IDs of credentials found on the computer
+    pub metadata: Option<serde_json::Value>, // Custom metadata
+}
