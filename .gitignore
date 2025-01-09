@@ -2,3 +2,5 @@
 .env
 
 docs/notes/scratch
+
+target/
