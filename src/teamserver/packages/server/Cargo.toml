@@ -4,3 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+axum = "0.8.1"
+serde = "1.0.217"
+sqlx = "0.8.3"
+surrealdb = "2.1.4"
+tokio = "1.43.0"
+tower = "0.5.2"
