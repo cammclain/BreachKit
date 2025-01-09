@@ -1,4 +1,5 @@
 // This file contains the SurrealDB schema's for objects/observables that can be found in a Windows environment, within a larger Active Directory Environment
+// This file contains thw surrealDB schemas for data that the agent can collect from windows environments within larger Active Directory environments.
 
 use chrono::{Datetime, Utc};
 use serde::{Deserialize, Serialize};
