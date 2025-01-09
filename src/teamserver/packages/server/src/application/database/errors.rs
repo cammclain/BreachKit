@@ -14,5 +14,16 @@ mod error {
     // Implement the IntoResponse trait for the Error type
     impl IntoResponse for Error {
         fn into_response(self) -> Response {
+         (StatusCode::INTERNAL_SERVER_ERROR, Json(self.to_string())).into_response()
     }
+
+    impl From<surrealdb::Error> for Error {
+        // define the from function to get the actual error
+        fn from(error: surrealdb::Error) -> Self {
+            eprintln!("{error}");
+            Self::Db
+        }
+    }    
+
 }
+
